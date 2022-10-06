@@ -7,5 +7,6 @@ import java.util.*
 
 @Repository
 interface MovieRepository : JpaRepository<Movie, Long> {
+    fun findMovieById(id: Int): Optional<Movie>
     fun findByTitle(title: String): Optional<Movie>
 }

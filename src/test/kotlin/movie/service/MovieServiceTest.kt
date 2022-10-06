@@ -37,6 +37,17 @@ internal class MovieServiceTest(
         assertThat(movieByTitle.get().title).isEqualTo(movie1.title)
     }
 
+    @Test
+    fun `should delete movie by given id`() {
+        // given
+        val movie1 = thereIsAMovie(1, "Titanic", 1997, Category.ROMANCE)
+        // when
+        movieService.deleteMovie(2)
+        val movieByTitle = movieService.getMovieByTitle(movie1.title)
+        // then
+        assertThat(movieByTitle).isNotPresent
+    }
+
     fun thereIsAMovie(id: Int, title: String, movieYear: Int, category: Category): Movie {
         return movieRepository.save(Movie(id, title, movieYear, category))
     }
