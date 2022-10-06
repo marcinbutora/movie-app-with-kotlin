@@ -20,7 +20,7 @@ class MovieService(private val movieRepository: MovieRepository) {
     }
 
     fun getMovieByTitle(title: String): Optional<Movie> {
-        return movieRepository.findByTitle(title)
+        return movieRepository.findTopByTitle(title)
     }
 
     fun deleteMovie(id: Int) {
