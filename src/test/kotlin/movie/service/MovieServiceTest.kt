@@ -19,12 +19,11 @@ internal class MovieServiceTest(
     fun `should return correct number of movies in db`() {
         // given
         thereIsAMovie(1, "Titanic", 1997, Category.ROMANCE)
-        thereIsAMovie(2, "Ace Ventura", 1995, Category.COMEDY)
         // when
         val allMovies = movieService.getAllMovies()
         val allMoviesCount = allMovies.size
         //then
-        assertThat(allMoviesCount).isEqualTo(2)
+        assertThat(allMoviesCount).isEqualTo(1)
     }
 
     @Test
@@ -32,20 +31,29 @@ internal class MovieServiceTest(
         // given
         val movie1 = thereIsAMovie(1, "Titanic", 1997, Category.ROMANCE)
         // when
-        val movieByTitle = movieService.getMovieByTitle("Titanic")
+        val movieByTitle = movieService.getMovieByTitle(movie1.title)
         //then
         assertThat(movieByTitle.get().title).isEqualTo(movie1.title)
     }
 
     @Test
+    fun `should create and save new movie`() {
+        // given
+        val movie = Movie(3, "Speed", 1995, Category.DRAMA)
+        // when
+        val savedMovie = movieService.createMovie(movie)
+        // then
+        assertThat(savedMovie).isEqualTo(movie)
+    }
+    @Test
     fun `should delete movie by given id`() {
         // given
         val movie1 = thereIsAMovie(1, "Titanic", 1997, Category.ROMANCE)
         // when
-        movieService.deleteMovie(2)
-        val movieByTitle = movieService.getMovieByTitle(movie1.title)
+        movieService.deleteMovie(movie1.id)
+        val allMovies = movieService.getAllMovies()
         // then
-        assertThat(movieByTitle).isNotPresent
+        assertThat(allMovies).isEmpty()
     }
 
     fun thereIsAMovie(id: Int, title: String, movieYear: Int, category: Category): Movie {
